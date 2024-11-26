@@ -1,0 +1,83 @@
+{% extends 'blank_layout.html' %}
+{% load static %}
+
+{% block banner %}
+
+<div class="account-page" >
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="{% static 'images/books.png' %}" style="height:620px;">
+            </div>
+            <div class="col-2">
+                    {% if messages %}
+                        <div class="message_container">
+                            {% for message in messages %}
+                                <li class="{{message.tags}}">{{message}}</li>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                <div class="form-container" style="height: 450px;">
+                    
+                    <div class="form-btn">
+                        <span onclick="login()">Login</span>
+                        <span onclick="register()">Register</span>
+                        <hr id="Indicator">
+                    </div>
+                    <form id="LoginForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" placeholder="Username">
+                        <input type="password" name="password" placeholder="Password">
+                        <button type="submit" name="log" class="btn">Login</button>
+                        <a href="">Forget Password</a>
+                    </form>
+
+                    <form id="RegForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" required placeholder="Username">
+                        <input type="email" name="email" required placeholder="Email">
+                        <input type="password" name="password" required placeholder="Password">
+                        <input type="password" name="cpassword" required placeholder="confirm Password">
+
+                        <button type="submit" name="reg" class="btn">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock banner %}
+
+{% block content %}
+<!-- Feadtued Categories -->
+{% block extra_scripts %}
+<script>
+    var LoginForm = document.getElementById("LoginForm");
+    var RegForm = document.getElementById("RegForm");
+    var Indicator = document.getElementById("Indicator");
+    function register() {
+        RegForm.style.transform = "translatex(0px)";
+        LoginForm.style.transform = "translatex(0px)";
+        Indicator.style.transform = "translateX(100px)";
+
+    }
+    function login() {
+        RegForm.style.transform = "translatex(300px)";
+        LoginForm.style.transform = "translatex(300px)";
+        Indicator.style.transform = "translate(0px)";
+
+    }
+</script>
+{% if reg %}
+    <script>
+        register()
+    </script>
+{% else %}
+    <script>
+        login()
+    </script>
+{% endif %}
+
+
+{% endblock %}
+{% endblock content %}

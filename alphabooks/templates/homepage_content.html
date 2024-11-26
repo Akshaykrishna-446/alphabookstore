@@ -1,0 +1,46 @@
+{% load static %}
+
+
+
+<!-- Featured Products -->
+
+<div class="small-container">
+    <h2 class="title mt-3" id="featured_books">Featured Books</h2>
+    <div class="row">
+        {% for book in featured_books %}
+        <div class="col-4">
+            <a href="{% url 'book_details' book.id %}"><img src="{{ book.volumeInfo.imageLinks.thumbnail }}" style="height: 350px;" ></a>
+            <h4>{{ book.volumeInfo.title }}</h4>
+            <small>By {{ book.volumeInfo.authors|join:", " }}</small>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </div>
+            <p><strong>Price:</strong> {{ book.price }} {{ book.saleInfo.listPrice.currencyCode}}</p>
+        </div>
+        {% endfor %}
+        
+    </div>
+    <h2 class="title" id="latest_books">Latest Released Books</h2>
+    <div class="row" >
+        {% for book in latest_books %}
+        <div class="col-4">
+            <a href="{% url 'book_details' book.id %}"><img src="{{ book.volumeInfo.imageLinks.thumbnail }}"></a>
+            <h4>{{ book.volumeInfo.title }}</h4>
+            <small>By {{ book.volumeInfo.authors|join:", " }}</small>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </div>
+            <p><strong>Price:</strong> {{ book.price }} {{ book.saleInfo.listPrice.currencyCode}}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>

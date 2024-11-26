@@ -1,0 +1,12 @@
+{% load static %}
+
+<div class="row">
+    <div class="col-2">
+        <h1>Give Your Mind <br> A New Refresh!</h1>
+        <p style="color: white;">" {{ quote.text }} ” <br> — {{ quote.author }}</p>
+        <a href="{% url 'books' %}" class="btn">Explore Now &#8594;</a>
+    </div>
+    <div class="col-2">
+        <img src="{% static 'images/books.png' %}" style="height:620px;" alt="bookImage">
+    </div>
+</div>

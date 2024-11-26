@@ -1,0 +1,134 @@
+{% extends 'blank_layout.html' %}
+
+
+{% block content %}
+{% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+            {{message}}
+        </div>
+        
+    {% endfor %}
+{% else %}
+<div class="small-container cart-page" style="height: 500px;">
+    {% if orders %}
+    <table>
+        <tbody>
+            <tr>
+                <th>Order ID</th>
+                <th>Book Details</th>
+                <th>Ordered Date</th>
+                <th>Total Price</th>
+                <th>Status</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>#ABS00{{order.id}}</td>
+                <td>
+                    <div class="cart-info">
+                        <img src="{{ order.book_cover }}">  
+                        <div>
+                            <p>{{ order.book_title }}</p>
+                            <span style="font-size: small;"> Price: <small>{{ order.price }}</small> </span> <br>
+                            <span style="font-size: small;"> Quantity: <small>{{ order.order_qty }}</small> </span>
+                            <br>
+                            <a href="#" class="cancel-order" data-id="{{ order.id }}" data-url="{% url 'orderremove' order.id %}">Cancel Order</a>
+                        </div>
+                    </div>
+                </td>
+                <td>{{order.ordered_date}}</td>
+                <td>{{order.order_amount}}</td>
+                <td>Confirmed</td>
+            </tr>
+            {% endfor %}
+            
+
+        </tbody>
+    </table>
+    
+    {% else %}
+    <p>no orders</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<div id="cancelPopup" class="popup">
+    <div class="popup-content">
+        <h3>Are you sure you want to cancel this order?</h3>
+        <div id="orderDetails"></div>
+        <div class="popup-actions">
+            <button id="confirmCancel" class="btn">Yes, Cancel</button>
+            <button id="closePopup" class="btn">No</button>
+        </div>
+    </div>
+</div>
+
+<!-- Styles for the Popup -->
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+    }
+    .popup-actions {
+        margin-top: 20px;
+    }
+    .popup-actions button {
+        margin: 5px;
+    }
+</style>
+
+<!-- JavaScript for Popup and Cancel Action -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select the popup and close button
+        var popup = document.getElementById('cancelPopup');
+        var closePopupButton = document.getElementById('closePopup');
+        var confirmCancelButton = document.getElementById('confirmCancel');
+        var orderUrl = '';
+
+        // Attach event listeners to all cancel-order links
+        document.querySelectorAll('.cancel-order').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                // Get order details
+                var orderId = this.dataset.id;
+                orderUrl = this.dataset.url;
+
+                // Set the popup content for confirmation
+                document.getElementById('orderDetails').textContent = 'Order ID #ABS00' + orderId;
+
+                // Show the popup
+                popup.style.display = 'flex';
+            });
+        });
+
+        // Close the popup when "No" is clicked
+        closePopupButton.addEventListener('click', function() {
+            popup.style.display = 'none';
+        });
+
+        // Redirect when "Yes, Cancel" is clicked
+        confirmCancelButton.addEventListener('click', function() {
+            window.location.href = orderUrl;
+        });
+    });
+</script>
+
+{% endblock content %}

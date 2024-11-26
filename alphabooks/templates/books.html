@@ -1,0 +1,78 @@
+{% extends 'blank_layout.html' %}
+
+
+{% block content %}
+<!-- Feadtued Categories -->
+<div class="small-container">
+    <div class="row row-2">
+        <h2>Explore Books</h2>
+        
+    </div>
+  
+    <div class="row">
+        {% for book in all_books %}
+        <div class="col-4">
+            <a href="{% url 'book_details' book.id %}">
+                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}">
+            </a>
+            <h4>{{ book.volumeInfo.title }}</h4>
+            <small>By {{ book.volumeInfo.authors|join:", " }}</small>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </div>
+            
+            <p><strong>Price:</strong> {{ book.price }} {{ book.saleInfo.listPrice.currencyCode}}</p>
+        </div>
+        
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if all_books.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ all_books.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ all_books.number }} of {{ all_books.paginator.num_pages }}.
+            </span>
+
+            {% if all_books.has_next %}
+                <a href="?page={{ all_books.next_page_number }}">next</a>
+                <a href="?page={{ all_books.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <style>
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .pagination .step-links a {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: 1px solid #724fc3;
+            color: #724fc3;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .pagination .step-links .current {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: 1px solid #724fc3;
+            background-color: #724fc3;
+            color: white;
+            border-radius: 5px;
+        }
+
+    </style>
+    
+</div>
+
+{% endblock content %}
